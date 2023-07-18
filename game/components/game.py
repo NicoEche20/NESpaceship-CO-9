@@ -39,7 +39,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input, self)
         self.enemy_manager.update(self)
-        self.bullet_manager.update(self)
+        self.bullet_manager.update(self, self.enemy_manager.enemies)
 
     def draw(self):
         self.clock.tick(FPS)

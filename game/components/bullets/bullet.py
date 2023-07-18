@@ -20,7 +20,7 @@ class Bullet(Sprite):
                 bullets.remove(self)
         if self.owner == PLAYER_TYPE:
             self.rect.y -= self.SPEED
-            if self.rect.y <= SCREEN_HEIGHT:
+            if self.rect.y  <= 0:
                 bullets.remove(self)
 
     def draw(self,screen):

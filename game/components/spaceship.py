@@ -28,6 +28,7 @@ class Spaceship(Sprite):
         if user_input[pygame.K_SPACE]:
             game.bullet_manager.add_bullet(self)
 
+
     def move_left(self):
         self.rect.x -= 10
         if self.rect.right < 0:

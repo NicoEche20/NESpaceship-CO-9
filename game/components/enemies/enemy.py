@@ -2,7 +2,7 @@ import random
 import pygame
 from pygame.sprite import Sprite
 
-from game.utils.constants import ENEMY_1, ENEMY_2, ENEMY_TYPE, SCREEN_HEIGHT, SCREEN_WIDTH
+from game.utils.constants import ENEMY_1, ENEMY_TYPE, SCREEN_HEIGHT, SCREEN_WIDTH
 
 LEFT = "left"
 RIGHT = "right"
