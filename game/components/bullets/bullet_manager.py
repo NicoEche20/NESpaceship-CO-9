@@ -12,16 +12,19 @@ class BulletManager:
             if enemy_bullet.rect.colliderect(game.player.rect):
                 self.enemy_bullets.remove(enemy_bullet)
                 game.playing = False
+                game.death_count += 1
+                print(game.death_count)
                 pygame.time.delay(1000)
                 break
+
         for player_bullet in self.player_bullets:
             player_bullet.update(self.player_bullets)
             for enemy in enemies:
                 if player_bullet.rect.colliderect(enemy.rect):
                     self.player_bullets.remove(player_bullet)
+                    game.score += 1
                     enemies.remove(enemy)
 
-        
     def draw(self, screen):
         for enemy_bullet in self.enemy_bullets:
             enemy_bullet.draw(screen)
@@ -31,14 +34,5 @@ class BulletManager:
     def add_bullet(self,spaceship):
         if spaceship.type == ENEMY_TYPE and not self.enemy_bullets:
             self.enemy_bullets.append(Bullet(spaceship))
-        if spaceship.type == PLAYER_TYPE:
+        if spaceship.type == PLAYER_TYPE and len(self.player_bullets)<=10:
             self.player_bullets.append(Bullet(spaceship))
-
-
-
-
-            #if player_bullet.rect.colliderect(game.enemy.rect):
-             #   self.enemy_bullets.remove(player_bullet)
-              #  game.playing = False
-               # pygame.time.delay(3000)
-                #break
