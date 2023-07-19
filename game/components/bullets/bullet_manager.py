@@ -13,7 +13,6 @@ class BulletManager:
                 self.enemy_bullets.remove(enemy_bullet)
                 game.playing = False
                 game.death_count += 1
-                print(game.death_count)
                 pygame.time.delay(1000)
                 break
 

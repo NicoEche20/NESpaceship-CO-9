@@ -21,9 +21,11 @@ class Game:
         self.player = Spaceship() 
         self.bullet_manager = BulletManager()
         self.enemy_manager = EnemyManager()
-        self.menu = Menu("Press anay key to start...")
+        self.menu = Menu("Press any key to start...")
         self.score = 0
         self.death_count = 0
+        self.max_score = 0 
+        
 
     def run(self):
         # Game loop: events - update - draw
@@ -84,8 +86,11 @@ class Game:
 
     def show_menu(self):
         if self.death_count > 0:
-            self.menu.update_message("You death")
-
+            self.max_score= self.score if self.max_score < self.score else self.max_score
+            if self.death_count == 1:
+                self.menu.update_message("You death",f"You have {self.death_count} death",f"Your score in this run is {self.score}",f"The maximum score in the game is {self.max_score}")
+            else:   
+                self.menu.update_message("You death",f"You have {self.death_count} deaths",f"Your score in this run is {self.score}",f"The maximum score in the game is {self.max_score}")
         self.menu.draw(self.screen)
         self.menu.events(self.on_close, self.play)
 
