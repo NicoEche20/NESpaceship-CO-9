@@ -2,7 +2,7 @@ import random
 import pygame
 from pygame.sprite import Sprite
 
-from game.utils.constants import PLAYER_TYPE, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, SPACESHIP, DEFAULT_TYPE
+from game.utils.constants import HEART_TYPE, PLAYER_TYPE, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, SPACESHIP, DEFAULT_TYPE
 
 class Spaceship(Sprite):
     X_POS = (SCREEN_WIDTH//2)-30
@@ -10,6 +10,7 @@ class Spaceship(Sprite):
     SPACESHIP_HEIGHT = 60 
     SPACESHIP_WIDTH = 50
     SPEED=10
+    
     def __init__(self):
         self.type = PLAYER_TYPE
         self.image = pygame.transform.scale(SPACESHIP,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
@@ -63,22 +64,28 @@ class Spaceship(Sprite):
         self.rect.y=self.Y_POS = 500
         self.speed = 10
         self.power_up_time_up=0
+        self.reset_power_up()
 
     def on_pick_power_up(self,time_up, type, image):
         self.power_up_time_up = time_up
         self.power_up_type = type
-        if self.power_up_type == SHIELD_TYPE:
-            self.image = pygame.transform.scale(image,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
-        else:
-            self.SPEED = 20
-      
-
+        self.power_up_select(image)
+        
     def draw_power_up(self,game):
         if self.power_up_type != DEFAULT_TYPE:
             time_left=round((self.power_up_time_up- pygame.time.get_ticks()) /1000,2)
             if time_left >=0:
                 game.menu.draw(game.screen, f"{self.power_up_type.capitalize()} is enabled for {time_left} seconds",y=30, color= (255,255,255))
             else:
-                self.power_up_type=DEFAULT_TYPE
-                self.image = pygame.transform.scale(SPACESHIP,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
-                self.SPEED = 10
+                self.reset_power_up()
+
+    def power_up_select(self,image):
+        if self.power_up_type == SHIELD_TYPE:
+            self.image = pygame.transform.scale(image,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
+        else:
+            self.SPEED = 20
+        
+    def reset_power_up(self):
+        self.power_up_type=DEFAULT_TYPE
+        self.image = pygame.transform.scale(SPACESHIP,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
+        self.SPEED = 10

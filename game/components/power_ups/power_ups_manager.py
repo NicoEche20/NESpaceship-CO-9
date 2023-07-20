@@ -16,8 +16,8 @@ class PowerUpManager:
         current_time=pygame.time.get_ticks()
         if not self.power_ups and current_time >= self.when_appears:
             self.when_appears += random.randint(10000,15000)
-            self.power_up=Heart
-            #self.power_ups.append(self.power_up())random.choice([Shield,BulletSpeed,Speed, Heart])
+            #self.power_up=Heart
+            self.power_up=random.choice([Shield,BulletSpeed,Speed,Heart])
             self.power_ups.append(self.power_up())        
 
     def update(self, game):
@@ -28,18 +28,17 @@ class PowerUpManager:
                 start_time=pygame.time.get_ticks()
                 duration=random.randint(3,5)
                 power_up_time_up =start_time + (duration*1000)
-                if self.power_up==Shield:
+                if self.power_up==Shield or self.power_up==Speed:
                     game.player.on_pick_power_up(power_up_time_up,power_up.type, power_up.spaceship_image)
-                    self.power_ups.remove(power_up)
-                elif self.power_up==BulletSpeed:
+                elif self.power_up==BulletSpeed or self.power_up==Heart:
                     game.bullet_manager.on_pick_power_up(power_up_time_up,power_up.type)
-                    self.power_ups.remove(power_up)
-                elif self.power_up==Speed:
-                    game.player.on_pick_power_up(power_up_time_up,power_up.type, power_up.spaceship_image)
-                    self.power_ups.remove(power_up)
-                elif self.power_up==Heart:
-                    game.bullet_manager.on_pick_power_up(power_up_time_up,power_up.type)
-                    self.power_ups.remove(power_up)
+                self.power_ups.remove(power_up)
+                #elif self.power_up==Speed or self.power_up==Heart:
+                 #   game.player.on_pick_power_up(power_up_time_up,power_up.type, power_up.spaceship_image)
+                 #   self.power_ups.remove(power_up)
+                #elif self.power_up==Heart:
+                 #   game.bullet_manager.on_pick_power_up(power_up_time_up,power_up.type)
+                  #  self.power_ups.remove(power_up)
 
     def draw(self, screen):
         for power_up in self.power_ups:
@@ -49,3 +48,4 @@ class PowerUpManager:
         self.power_ups=[]
         now=pygame.time.get_ticks()
         self.when_appears = now + random.randint(10000,15000)
+    

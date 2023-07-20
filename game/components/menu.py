@@ -34,3 +34,7 @@ class Menu:
         text_rect=text.get_rect()
         text_rect.center=(HALF_SCREEN_WIDTH, y)
         screen.blit(text, text_rect)
+
+    def Music(self):
+        pygame.mixer.music.load("game/assets/Music/playing_soundtrack.mp3")
+        pygame.mixer.music.play(-1)

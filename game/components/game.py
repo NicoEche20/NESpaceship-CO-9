@@ -28,9 +28,9 @@ class Game:
         self.score = Counter("Score")
         self.death_count = Counter("Death Counter")
         self.max_score = Counter("Highest Score")
-        
 
     def run(self):
+        self.menu.Music()
         # Game loop: events - update - draw
         self.running = True
         while self.running:
@@ -40,6 +40,8 @@ class Game:
         pygame.quit()
 
     def play(self):
+        pygame.mixer.music.load("game/assets/Music/menu_soundtrack.mp3")
+        pygame.mixer.music.play(-1)
         self.reset()
         self.playing=True
         self.enemy_manager.reset()
@@ -48,6 +50,8 @@ class Game:
             self.update()
             self.draw()
         self.update_max_score()
+        pygame.mixer.music.pause()
+        self.menu.Music()
 
     def events(self):
         for event in pygame.event.get():
