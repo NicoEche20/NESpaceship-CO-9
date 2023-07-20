@@ -17,14 +17,20 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+GALAXY = pygame.image.load(os.path.join(IMG_DIR, "Other/GALAXY3.jpg"))
+
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "shield"
 PLAYER_TYPE = "player"
 ENEMY_TYPE = "enemy"
+BULLETS_TYPE = "bulletspeed"
+SPEED_TYPE = "speed"
+HEART_TYPE = "heart"
 
 SPACESHIP = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
 SPACESHIP_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship_shield.png"))
 BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_1.png"))
+BULLETP = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_3.png"))
 
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))

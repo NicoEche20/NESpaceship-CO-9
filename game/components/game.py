@@ -2,6 +2,8 @@ import pygame
 from game.components.bullets.bullet_manager import BulletManager
 from game.components.enemies.enemy_manager import EnemyManager
 from game.components.menu import Menu
+from game.components.count import Counter
+from game.components.power_ups.power_ups_manager import PowerUpManager
 from game.components.spaceship import Spaceship
 from game.utils.constants import BG, FONT_STYLE, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 
@@ -21,10 +23,11 @@ class Game:
         self.player = Spaceship() 
         self.bullet_manager = BulletManager()
         self.enemy_manager = EnemyManager()
-        self.menu = Menu("Press any key to start...")
-        self.score = 0
-        self.death_count = 0
-        self.max_score = 0 
+        self.power_up_manager = PowerUpManager()
+        self.menu = Menu()
+        self.score = Counter("Score")
+        self.death_count = Counter("Death Counter")
+        self.max_score = Counter("Highest Score")
         
 
     def run(self):
@@ -37,13 +40,14 @@ class Game:
         pygame.quit()
 
     def play(self):
+        self.reset()
         self.playing=True
         self.enemy_manager.reset()
-        self.score = 0
         while self.playing:
             self.events()
             self.update()
             self.draw()
+        self.update_max_score()
 
     def events(self):
         for event in pygame.event.get():
@@ -55,15 +59,19 @@ class Game:
         self.player.update(user_input, self)
         self.enemy_manager.update(self)
         self.bullet_manager.update(self, self.enemy_manager.enemies)
+        self.power_up_manager.update(self)
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
+        self.player.draw_power_up(self)
         self.enemy_manager.draw(self.screen)
         self.bullet_manager.draw(self.screen)
-        self.draw_score()
+        self.bullet_manager.draw_power_up(self)
+        self.power_up_manager.draw(self.screen)
+        self.score.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -75,25 +83,36 @@ class Game:
         if self.y_pos_bg >= SCREEN_HEIGHT:
             self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
             self.y_pos_bg = 0
-        self.y_pos_bg += self.game_speed
-
-    def draw_score(self):
-        font = pygame.font.Font(FONT_STYLE, 22)
-        text = font.render(f"Score {self.score}", True, (255,255,255))
-        text_rect = text.get_rect()
-        text_rect.center = (1000, 50)
-        self.screen.blit(text, text_rect)
+        self.y_pos_bg += self.game_speed     
 
     def show_menu(self):
-        if self.death_count > 0:
-            self.max_score= self.score if self.max_score < self.score else self.max_score
-            if self.death_count == 1:
-                self.menu.update_message("You death",f"You have {self.death_count} death",f"Your score in this run is {self.score}",f"The maximum score in the game is {self.max_score}")
-            else:   
-                self.menu.update_message("You death",f"You have {self.death_count} deaths",f"Your score in this run is {self.score}",f"The maximum score in the game is {self.max_score}")
-        self.menu.draw(self.screen)
+        self.menu.draw_wp(self.screen)
+        death_message = f"You have {self.death_count.count} death" 
+        if self.death_count.count == 0:
+            self.menu.draw(self.screen,"Press ENTER to start...")
+        else:
+            if self.death_count.count > 1: 
+                death_message+="s"
+            self.menu.draw(self.screen,"Press ENTER to restart")
+            self.menu.draw(self.screen,death_message,y=350)
+            self.menu.draw(self.screen,f"Your score in this run is {self.score.count}",y=400)
+            self.menu.draw(self.screen,f"The maximum score in the game is {self.max_score.count}",y=450)
+        
+        self.menu.draw_icon(self.screen)
         self.menu.events(self.on_close, self.play)
+        pygame.display.flip()
+
+    def update_max_score(self):
+        if self.score.count > self.max_score.count:
+            self.max_score.update(self.score.count)
 
     def on_close(self):
         self.playing = False
         self.running = False
+    
+    def reset(self):
+        self.enemy_manager.reset()
+        self.bullet_manager.reset()
+        self.player.reset()
+        self.score.reset()
+        self.power_up_manager.reset()
