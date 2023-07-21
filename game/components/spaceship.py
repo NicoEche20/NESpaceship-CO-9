@@ -10,7 +10,7 @@ class Spaceship(Sprite):
     SPACESHIP_HEIGHT = 60 
     SPACESHIP_WIDTH = 50
     SPEED=10
-    
+    A = False    
     def __init__(self):
         self.type = PLAYER_TYPE
         self.image = pygame.transform.scale(SPACESHIP,(self.SPACESHIP_HEIGHT, self.SPACESHIP_WIDTH))
@@ -19,7 +19,6 @@ class Spaceship(Sprite):
         self.rect.y = self.Y_POS
         self.power_up_type = DEFAULT_TYPE
         self.power_up_time_up = 0
-    
 
     def update(self, user_input,game):
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
@@ -32,6 +31,14 @@ class Spaceship(Sprite):
             self.move_up()
         if user_input[pygame.K_SPACE]:
             game.bullet_manager.add_bullet(self)
+        if user_input[pygame.K_TAB]:
+            self.A=True
+    
+    def pause(self):
+        if self.A==True:
+            return self.A
+        else:
+            return self.A
 
 
     def move_left(self):

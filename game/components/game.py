@@ -29,6 +29,7 @@ class Game:
         self.death_count = Counter("Death Counter")
         self.max_score = Counter("Highest Score")
 
+
     def run(self):
         self.menu.Music()
         # Game loop: events - update - draw
@@ -59,7 +60,7 @@ class Game:
                 self.playing = False
 
     def update(self):
-        user_input = pygame.key.get_pressed()
+        user_input= pygame.key.get_pressed()
         self.player.update(user_input, self)
         self.enemy_manager.update(self)
         self.bullet_manager.update(self, self.enemy_manager.enemies)
@@ -94,10 +95,14 @@ class Game:
         death_message = f"You have {self.death_count.count} death" 
         if self.death_count.count == 0:
             self.menu.draw(self.screen,"Press ENTER to start...")
+        elif self.player.pause()==True:
+            print(self.player.pause())
+            self.on_pause
+            self.menu.draw(self.screen,"Press ENTER to continue...")
         else:
             if self.death_count.count > 1: 
                 death_message+="s"
-            self.menu.draw(self.screen,"Press ENTER to restart")
+            self.menu.draw(self.screen,"Press ENTER to restart...")
             self.menu.draw(self.screen,death_message,y=350)
             self.menu.draw(self.screen,f"Your score in this run is {self.score.count}",y=400)
             self.menu.draw(self.screen,f"The maximum score in the game is {self.max_score.count}",y=450)
@@ -113,7 +118,11 @@ class Game:
     def on_close(self):
         self.playing = False
         self.running = False
-    
+
+    def on_pause(self):
+        self.playing = False
+        self.running = True
+
     def reset(self):
         self.enemy_manager.reset()
         self.bullet_manager.reset()

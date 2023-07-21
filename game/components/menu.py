@@ -23,6 +23,7 @@ class Menu:
                 if event.key == pygame.K_RETURN:
                     on_start()
 
+
     def draw_icon(self, screen):
         screen.blit(self.icon, self.icon_rect)
 
@@ -38,3 +39,4 @@ class Menu:
     def Music(self):
         pygame.mixer.music.load("game/assets/Music/playing_soundtrack.mp3")
         pygame.mixer.music.play(-1)
+    
